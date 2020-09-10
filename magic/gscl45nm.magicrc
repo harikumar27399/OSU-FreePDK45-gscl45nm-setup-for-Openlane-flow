@@ -1,0 +1,64 @@
+#-----------------------------------------------------
+# .magicrc startup file for gscl45nm project
+#-----------------------------------------------------
+
+#path sys +QFLOW_LIB_DIR/tech/gscl45nm
+#tech load gscl45nm -noprompt
+
+#addpath digital
+
+puts stdout "Sourcing design .magicrc for technology OSU45nm ..."
+
+# Put grid on 0.005 pitch.  This is important, as some commands don't
+# rescale the grid automatically (such as lef read?).
+
+#set scalefac [tech lambda]
+
+#Set internal grid to 5nm (lambda is 25nm)
+scalegrid 1 5
+
+# drc off
+drc euclidean on
+
+# Allow override of PDK path from environment variable PDKPATH
+if {[catch {set PDKPATH $::env(PDKPATH)}]} {
+    set PDKPATH "STAGING_PATH/TECHNAME"
+}
+
+# loading technology
+tech load $PDKPATH/MAGIC_CURRENT/TECHNAME.tech
+
+# load device generator
+#source $PDKPATH/libs.tech/magic/gscl45nm.tcl
+
+# load bind keys (optional)
+# source $PDKPATH/libs.tech/magic/current/sky130A-BindKeys
+
+# set units to lambda grid 
+snap lambda
+
+# set osu45nm standard power, ground, and substrate names
+set VDD vdd
+set GND gnd
+#set SUB VSUBS
+
+# Allow override of type of magic library views used, "mag" or "maglef",
+# from environment variable MAGTYPE
+
+if {[catch {set MAGTYPE $::env(MAGTYPE)}]} {
+   set MAGTYPE maglef
+}
+
+# add path to reference cells
+if {[file isdir ${PDKPATH}/libs.ref/${MAGTYPE}]} {
+    addpath ${PDKPATH}/libs.ref/${MAGTYPE}/gscl45nm
+} else {
+    addpath ${PDKPATH}/libs.ref/gscl45nm/${MAGTYPE}
+}
+
+# add path to GDS cells
+
+# add path to IP from catalog.  This procedure defined in the PDK script.
+catch {magic::query_mylib_ip}
+# add path to local IP from user design space.  Defined in the PDK script.
+catch {magic::query_my_projects}
