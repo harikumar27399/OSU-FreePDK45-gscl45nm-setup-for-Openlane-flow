@@ -1,0 +1,46 @@
+#define DESCRIPTION OSUFreePDK 45nm CMOS, local interconntect + high-resistance poly
+#ifdef METAL10
+#define OPTION1 + 10 metal layer backend stack
+#endif (METAL10)
+#ifdef MIM
+#define OPTION2 + MiM caps
+#endif (MIM)
+#ifdef REDISTRIBUTION
+#define OPTION3 + redistribution layer
+#endif (REDISTRIBUTION)
+{
+    "foundry" : "OSU",
+    "foundry-name" : "FreePDK",
+    "node" : "TECHNAME",
+    "feature-size" : "45nm",
+    "status" : "active",
+    "description" : "DESCRIPTION OPTION1 OPTION2 OPTION3",
+    "options" : [
+#ifdef METAL10
+#undef METAL10
+#ifdef MIM || REDISTRIBUTION
+        "METAL10",
+#else (!(MIM || REDISTRIBUTION))
+        "METAL10"
+#endif (!(MIM || REDISTRIBUTION))
+#endif (METAL10)
+#ifdef MIM
+#undef MIM
+#ifdef REDISTRIBUTION
+        "MIM",
+#else
+        "MIM"
+#endif (REDISTRIBUTION)
+#endif (MIM)
+#ifdef REDISTRIBUTION
+#undef REDISTRIBUTION
+        "REDISTRIBUTION"
+#endif (REDISTRIBUTION)
+    ],
+    "stdcells" : [
+	"gscl45nm"
+    ],
+    "iocells" : [
+        "gscl45nm"
+    ]
+}
