@@ -265,9 +265,7 @@ vendor-a:
 	${STAGE} -source ${FREEPDK45_PATH} -target ${STAGING_PATH}/${FREEPDK45} \
 		-techlef %l/cells/*.tlef \
 		-spice %l/cells/*.sp compile-only \
-		#-cdl %l/latest/cells/*/*.cdl ignore=topography compile-only \
 		-lef %l/cells/*.lef exclude=*.*.v compile-only \
-		#-doc %l/latest/cells/*/*.pdf \
 		-lib %l/cells/*.lib \
 		-gds %l/cells/*.gds compile-only \
 		-verilog %l/cells/*.v compile-only \
